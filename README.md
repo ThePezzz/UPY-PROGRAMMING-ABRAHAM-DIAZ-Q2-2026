@@ -1,7 +1,6 @@
 # UPY-PROGRAMMING-ABRAHAM-DIAZ-Q2-2026
 
 '''bash
-
                              Z             
                        Z                   
         .,.,        z           
@@ -26,6 +25,4 @@
   |     | | \|                             
    `-.  | |  |                             
       `-| '
-
-
 '''
