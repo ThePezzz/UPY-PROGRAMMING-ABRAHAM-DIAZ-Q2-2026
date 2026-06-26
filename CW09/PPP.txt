@@ -1,0 +1,41 @@
+# Spanish Verb Conjugator
+
+BEGIN
+
+# Create the pronouns and verb endings
+
+Create a list of Spanish pronouns
+
+Create a dictionary with the endings for AR, ER, and IR verbs
+
+# Ask the user for a verb
+
+Ask the user to enter a Spanish verb
+
+Convert the verb to lowercase
+
+stem ← remove the last two letters of the verb
+
+ending ← the last two letters of the verb
+
+# Check if the ending is valid
+
+IF ending exists in the dictionary THEN
+
+    conjugation ← corresponding list of endings
+
+    FOR each pronoun
+
+        Display the pronoun and the conjugated verb
+
+    END FOR
+
+ELSE
+
+    Display "Invalid verb. Please enter a verb ending in ar, er, or ir."
+
+END IF
+
+END
+#AI Declaration
+I only use ai to help me with the code
