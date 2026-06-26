@@ -1,0 +1,60 @@
+INPUT
+   Get usuario, contraseña from user
+
+PROCESS
+   # Step 1: authenticate the user (repeat until valid credentials)
+   SET acceso <- False
+   LOOP while acceso = False:
+      IF usuario exists in usuarios AND usuarios[usuario]['password'] = contraseña:
+         SET acceso <- True
+      ELSE:
+         Display "Usuario o contraseña incorrectos"
+         Get usuario, contraseña from user
+
+   # Step 2: retrieve role and name for the logged-in user
+   rol <- usuarios[usuario]['rol']
+   nombre <- usuarios[usuario]['nombre']
+
+   # Step 3: branch behavior according to role
+   IF rol = "alumno":
+      SET aprobadas <- empty set
+      LOOP for each materia in materias:
+         calif <- calificaciones[usuario][materia]
+         IF calif >= 8.0:
+            ADD materia to aprobadas
+      pendientes <- materias - aprobadas
+
+   ELSE IF rol = "maestro":
+      LOOP for each clave_usuario in usuarios:
+         IF usuarios[clave_usuario]['rol'] = "alumno":
+            # collect for student list display
+      
+      SET continuar <- "s"
+      LOOP while continuar = "s":
+         Get alumno from user
+         LOOP while alumno not in calificaciones:
+            Display "Ese alumno no existe."
+            Get alumno from user
+         Get materia from user
+         LOOP while materia not in materias:
+            Display "Esa materia no existe."
+            Get materia from user
+         Get nueva_calificacion from user
+         SET calificaciones[alumno][materia] <- nueva_calificacion
+         Get continuar from user
+
+   ELSE IF rol = "coordinador":
+      LOOP for each clave_usuario in usuarios:
+         IF usuarios[clave_usuario]['rol'] = "maestro":
+            # collect for teacher list display
+      LOOP for each materia in materias:
+         # collect for subject list display
+      LOOP for each alumno in calificaciones:
+         LOOP for each materia in materias:
+            # collect calificaciones[alumno][materia] for display
+
+OUTPUT
+   Display "Bienvenido, " + nombre + " (" + rol + ")"
+   IF rol = "alumno": Display calif per materia, then aprobadas, pendientes
+   IF rol = "maestro": Display student list, then confirmation after each grade update
+   IF rol = "coordinador": Display teacher list, subject list, and all students with grades
