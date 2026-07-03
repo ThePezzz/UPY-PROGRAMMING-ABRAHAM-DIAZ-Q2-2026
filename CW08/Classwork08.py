@@ -1,6 +1,6 @@
 #Classwork 08
 import math
-
+#input
 a = float(input("Enter the left endpoint of the interval "))
 b = float(input("Enter the right endpoint of the interval "))
 
