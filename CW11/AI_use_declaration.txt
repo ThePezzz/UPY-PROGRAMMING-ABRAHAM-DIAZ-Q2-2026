@@ -1,0 +1,12 @@
+AI Use Declaration
+
+Tool used: Claude (Anthropic)
+
+I used Claude to help me debug and fix errors in my Mandelbrot Set program,
+specifically a FileNotFoundError caused by a missing config.txt file and an
+empty CSV output caused by the output file not being closed after writing.
+I also used Claude to generate the PPP.txt pseudocode and the Flowchart.png
+diagram for this assignment, based on my own working code. The core logic
+of the program (reading the config file, mapping grid points to complex
+numbers, applying the escape-time algorithm, and writing results to CSV)
+was written and understood by me.
