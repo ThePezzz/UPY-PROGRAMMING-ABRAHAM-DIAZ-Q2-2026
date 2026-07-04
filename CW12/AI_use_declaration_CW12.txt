@@ -1,0 +1,15 @@
+AI Use Declaration
+
+Tool used: Claude (Anthropic)
+
+I used Claude to help me debug and fix errors while setting up this program,
+specifically a SyntaxError caused by writing "pip install pillow" inside the
+Python file instead of the terminal, a ModuleNotFoundError for the missing
+PIL library, a FileNotFoundError caused by config.txt not existing in the
+project folder, and a working-directory issue in VS Code that was resolved
+by opening the project folder directly instead of a single file. I also used
+Claude to generate the PPP.txt pseudocode and the Flowchart.png diagram for
+this assignment, based on my own working code. The core logic of the program
+(reading the config and CSV files, converting iteration counts into
+brightness values, and building the image with PIL) was written and
+understood by me.
