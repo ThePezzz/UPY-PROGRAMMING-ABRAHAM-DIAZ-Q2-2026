@@ -1,4 +1,4 @@
-# Spanish Verb Conjugator
+#Spanish Verb Conjugator
 
 BEGIN
 
