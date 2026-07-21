@@ -1,0 +1,18 @@
+AI Use Declaration
+
+Tool used: Claude (Anthropic)
+
+I wrote the original bubble_sort and draw_bars functions myself, along with
+the animated bubble sort and the canvas setup, as part of my earlier work
+in class.
+
+I used Claude to extend that program into the full assignment: it wrote the
+insertion_sort and selection_sort functions, the insertion_sort_animated and
+selection_sort_animated functions, and the menu that asks the user which
+algorithm to run. Claude also wrote the sorting_algorithms_ppp.txt
+pseudocode and generated the sorting_algorithms_flowchart.png diagram, and
+it tested the three sorting algorithms against random and edge-case inputs
+to confirm they sort correctly.
+
+I reviewed the generated code to make sure I understand how each algorithm
+works and how the animation highlights the values being compared and moved.

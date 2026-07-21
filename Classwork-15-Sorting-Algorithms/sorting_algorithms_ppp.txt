@@ -1,0 +1,171 @@
+# Classwork 15 - Sorting Algorithms
+# Pseudocode (PPP)
+
+START
+
+# ---------------------------------------------------------------
+# INPUT
+# ---------------------------------------------------------------
+
+CREATE a list called numbers with 10 random whole numbers between 0 and 100
+DISPLAY "Before sorting:" and the list
+ASK the user which algorithm to watch (bubble / insertion / selection)
+
+
+# ---------------------------------------------------------------
+# PROCESS - BUBBLE SORT
+# ---------------------------------------------------------------
+
+PROCEDURE bubble_sort(numbers)
+    n <- number of items in numbers
+    FOR sweep <- 0 TO n - 1
+        FOR pair <- 0 TO n - 2 - sweep
+            IF numbers at pair is greater than numbers at pair + 1 THEN
+                SWAP numbers at pair with numbers at pair + 1
+            END IF
+        END FOR
+    END FOR
+END PROCEDURE
+
+
+# ---------------------------------------------------------------
+# PROCESS - INSERTION SORT
+# ---------------------------------------------------------------
+
+PROCEDURE insertion_sort(numbers)
+    n <- number of items in numbers
+    FOR index <- 1 TO n - 1
+        current <- numbers at index
+        position <- index - 1
+        WHILE position >= 0 AND numbers at position is greater than current
+            numbers at position + 1 <- numbers at position
+            position <- position - 1
+        END WHILE
+        numbers at position + 1 <- current
+    END FOR
+END PROCEDURE
+
+
+# ---------------------------------------------------------------
+# PROCESS - SELECTION SORT
+# ---------------------------------------------------------------
+
+PROCEDURE selection_sort(numbers)
+    n <- number of items in numbers
+    FOR index <- 0 TO n - 1
+        minimum <- index
+        FOR scan <- index + 1 TO n - 1
+            IF numbers at scan is less than numbers at minimum THEN
+                minimum <- scan
+            END IF
+        END FOR
+        SWAP numbers at index with numbers at minimum
+    END FOR
+END PROCEDURE
+
+
+# ---------------------------------------------------------------
+# OUTPUT - DRAWING ONE FRAME
+# ---------------------------------------------------------------
+
+PROCEDURE draw_bars(numbers, selected)
+    CLEAR the canvas
+    n <- number of items in numbers
+    bar_width <- 10.0 divided by n
+
+    FOR each index i and value number in numbers
+        x <- i * bar_width + bar_width / 2
+        IF i is in selected THEN
+            pen color <- red
+        ELSE
+            pen color <- blue
+        END IF
+        DRAW a filled rectangle at x, of width bar_width * 0.9 and height number
+    END FOR
+
+    SHOW the canvas and pause for 500 milliseconds
+END PROCEDURE
+
+
+PROCEDURE setup_canvas(numbers)
+    SET the horizontal scale of the canvas from -0.1 to 10
+    SET the vertical scale of the canvas from -0.5 to the largest value + 1
+END PROCEDURE
+
+
+# ---------------------------------------------------------------
+# PROCESS + OUTPUT - ANIMATED VERSIONS
+# ---------------------------------------------------------------
+
+PROCEDURE bubble_sort_animated(numbers)
+    CALL setup_canvas(numbers)
+    n <- number of items in numbers
+    FOR sweep <- 0 TO n - 1
+        FOR pair <- 0 TO n - 2 - sweep
+            CALL draw_bars(numbers, highlighting pair and pair + 1)
+            IF numbers at pair is greater than numbers at pair + 1 THEN
+                SWAP numbers at pair with numbers at pair + 1
+                CALL draw_bars(numbers, highlighting pair and pair + 1)
+            END IF
+        END FOR
+    END FOR
+    CALL draw_bars(numbers, highlighting nothing)
+END PROCEDURE
+
+
+PROCEDURE insertion_sort_animated(numbers)
+    CALL setup_canvas(numbers)
+    n <- number of items in numbers
+    FOR index <- 1 TO n - 1
+        current <- numbers at index
+        position <- index - 1
+        CALL draw_bars(numbers, highlighting index)
+
+        WHILE position >= 0 AND numbers at position is greater than current
+            numbers at position + 1 <- numbers at position
+            position <- position - 1
+            CALL draw_bars(numbers, highlighting position + 1)
+        END WHILE
+
+        numbers at position + 1 <- current
+        CALL draw_bars(numbers, highlighting position + 1)
+    END FOR
+    CALL draw_bars(numbers, highlighting nothing)
+END PROCEDURE
+
+
+PROCEDURE selection_sort_animated(numbers)
+    CALL setup_canvas(numbers)
+    n <- number of items in numbers
+    FOR index <- 0 TO n - 1
+        minimum <- index
+        FOR scan <- index + 1 TO n - 1
+            CALL draw_bars(numbers, highlighting minimum and scan)
+            IF numbers at scan is less than numbers at minimum THEN
+                minimum <- scan
+            END IF
+        END FOR
+        SWAP numbers at index with numbers at minimum
+        CALL draw_bars(numbers, highlighting index and minimum)
+    END FOR
+    CALL draw_bars(numbers, highlighting nothing)
+END PROCEDURE
+
+
+# ---------------------------------------------------------------
+# OUTPUT
+# ---------------------------------------------------------------
+
+IF the chosen algorithm is "bubble" THEN
+    CALL bubble_sort_animated(numbers)
+ELSE IF the chosen algorithm is "insertion" THEN
+    CALL insertion_sort_animated(numbers)
+ELSE IF the chosen algorithm is "selection" THEN
+    CALL selection_sort_animated(numbers)
+ELSE
+    DISPLAY "Choose bubble, insertion or selection"
+END IF
+
+DISPLAY "After sorting:" and the list
+
+END
