@@ -1,28 +1,59 @@
-# DÍGITO VERIFICADOR - ROL UTFSM
+# DIGITO VERIFICADOR - ROL UTFSM
 
-rol = input("Escribe un rol: ")
+class RolInvalidError(Exception):
+    pass
+
+
+def calcular_digito(rol_sin_digito):
+    secuencia = [2, 3, 4, 5, 6, 7]
+    inverso = rol_sin_digito[::-1]
+    suma = 0
+
+    for index in range(len(inverso)):
+        numero = int(inverso[index])
+        suma += numero * secuencia[index % 6]
+
+    resultado = suma % 11
+    digito = 11 - resultado
+
+    if digito == 11:
+        digito = "0"
+    elif digito == 10:
+        digito = "K"
+    else:
+        digito = str(digito)
+
+    return digito
+
+
+rol = input("Escribe el rol (formato XXXXXXXXX-X): ").strip()
 
 try:
+    partes = rol.split("-")
 
-    rol_sin_digito, digito = rol.split("-")
-except ValueError:
-    print("El rol debe tener el formato XXXX-0")
-    exit()
+    if len(partes) != 2:
+        raise RolInvalidError("No tiene el formato XXXXXXXXX-X")
 
-inverso = rol_sin_digito[::-1] + "-"
+    rol_sin_digito, digito_ingresado = partes
 
-secuencia  = [2, 3, 4, 5, 6, 7]
-suma = 0
+    if not rol_sin_digito.isdigit():
+        raise RolInvalidError("Los digitos del rol deben ser numericos")
 
-for index in range(len(inverso)):
-    numero = int(inverso[index])
-    suma += numero * secuencia[index % 6]
+    if not digito_ingresado.isdigit() and digito_ingresado.upper() != "K":
+        raise RolInvalidError("El digito verificador debe ser numerico")
 
-resultado = suma % 11
-digito_calculado = 11 - resultado
+    digito_calculado = calcular_digito(rol_sin_digito)
 
-print(f"\nRol invertido:      {rol_invertido}")
-print(f"Suma total:         {suma}")
-print(f"Suma % 11:          {modulo}")
-print(f"11 - {modulo}:             {digito_verificador}")
-print(f"\nROL completo: {rol}-{digito_verificador}")
+    if digito_calculado != digito_ingresado.upper():
+        raise RolInvalidError(
+            f"Error: El digito verificador no coincide, se esperaba {digito_calculado}"
+        )
+
+except RolInvalidError as error:
+    print(f"Rol invalido: {error}")
+
+except Exception as error:
+    print(f"Ocurrio un error inesperado: {error}")
+
+else:
+    print(f"{rol_sin_digito}-{digito_calculado}")
