@@ -1,8 +1,5 @@
 # UPY-PROGRAMMING-ABRAHAM-DIAZ-Q2-2026
-
-
 '''text
-
                              Z             
                        Z                   
         .,.,        z           
@@ -27,3 +24,4 @@
   |     | | \|                             
    `-.  | |  |                             
         `   -| '
+'''
