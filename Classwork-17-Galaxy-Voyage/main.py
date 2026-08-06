@@ -12,6 +12,7 @@ with open('config.txt', 'r') as file:
         else:
             config[parameter] = int(value)
 
+vanishing_point = (config['width'] * 0.5, config['height'] * 0.25)  # Adjusted to be a tuple for the vanishing point
 
 #INITIALIZATION
 pygame.init()
@@ -30,12 +31,83 @@ def calculate_x_positions(surface, vertical_lines, space):
         offset += 1
 
     return x_positions
+def calculate_y_positions(surface, horizontal_lines):
+    y_positions = []
+    height = surface.get_height()
+    spacing = height / (horizontal_lines + 1) 
+
+    for i in range(1, horizontal_lines + 1):
+        y_positions.append(i * spacing)
+
+    return y_positions
 
 def draw_vertical_lines(surface, x_positions, color, width=2):
     height = surface.get_height()
     
     for x in x_positions:
         pygame.draw.line(surface, color, (x, 0), (x, height), width)
+def draw_perspective_vertical_lines(surface, x_positions, vanishing_point, color, width):
+    height = surface.get_height()
+
+    for x in x_positions:
+        pygame.draw.line(surface, color, vanishing_point, (x, height), width)
+
+def draw_horizontal_lines(surface, x_positions, y_positions, color, width=2):
+    for y in y_positions:
+        start_point = (x_positions[0], y)  # Start from the first vertical line
+        end_point   = (x_positions[-1], y)   # End at the last vertical line
+        pygame.draw.line(surface, color, start_point, end_point, width)
+
+def draw_perspective_horizontal_lines(surface, x_positions, y_positions, vanishing_point, color, width=2):
+    height = surface.get_height()
+    start_point = vanishing_point
+
+    diagonal_1 = (start_point, (x_positions[0], height))
+    diagonal_2 = (start_point, (x_positions[-1], height))
+
+    for y in y_positions:
+        if y > vanishing_point[1]: # Only draw lines below the vanishing point
+            point_1 = (x_positions[0], y)
+            point_2 = (x_positions[-1], y)
+
+            h_line = (point_1, point_2)
+            intersection_1 = find_intersection(diagonal_1, h_line)
+            intersection_2 = find_intersection(diagonal_2, h_line)
+
+            pygame.draw.line(surface, color, intersection_1, intersection_2, width)
+
+def find_intersection(line1, line2):
+
+    start_point_line_1, end_point_line_1 = line1
+    start_point_line_2, end_point_line_2 = line2
+
+    x1, y1 = start_point_line_1
+    x2, y2 = end_point_line_1
+    x3, y3 = start_point_line_2
+    x4, y4 = end_point_line_2
+
+    denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    common_factor = x1 * y2 - y1 * x2
+    common_factor2 = x3 * y4 - y3 * x4
+
+    if denominator == 0:
+        return None  # Lines are parallel
+
+    intersection_x = (common_factor * (x3 - x4) - (x1 - x2) * common_factor2) / denominator
+    intersection_y = (common_factor * (y3 - y4) - (y1 - y2) * common_factor2) / denominator
+
+    return (intersection_x, intersection_y)
+
+def non_linear_spacing(surface, y_positions, vanishing_point, power=2.0):
+    height = surface.get_height()
+    v_y = vanishing_point[1]
+    available_height = height - v_y
+    y_curved = []
+    for y in y_positions:
+        t = (y - v_y) / available_height if available_height != 0 else 0
+        new_y = v_y + available_height * (t ** power)
+        y_curved.append(new_y)
+    return y_curved
 
 #MAIN LOOP
 x_positions = calculate_x_positions(
@@ -45,6 +117,16 @@ x_positions = calculate_x_positions(
 )
 print(x_positions)
 
+y_positions = calculate_y_positions(
+    surface=screen,
+    horizontal_lines=config['horizontal_lines']
+)
+y_curved = non_linear_spacing(
+    surface=screen,
+    y_positions=y_positions,
+    vanishing_point=vanishing_point
+)
+print(y_positions)
 running = True
 while running:
     for event in pygame.event.get():
@@ -52,7 +134,11 @@ while running:
             running = False
 
     screen.fill(config['bg_color'])
-    draw_vertical_lines(screen, x_positions, config['line_color'])
+    #draw_vertical_lines(screen, x_positions, config['line_color'])
+    #draw_horizontal_lines(screen, x_positions, y_positions, config['line_color'])
+    #draw_perspective_horizontal_lines(screen, x_positions, y_positions, vanishing_point, config['line_color'], width=2)
+    draw_perspective_vertical_lines(screen, x_positions, vanishing_point, config['line_color'], width=2)
+    draw_perspective_horizontal_lines(screen, x_positions, y_curved, vanishing_point, config['line_color'], width = 2)
     pygame.display.flip()
 
 pygame.quit()
